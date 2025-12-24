@@ -35,6 +35,7 @@ This repository provides a powerful plugin system for extending Perplexity AI:
 |--------|-------------|--------|
 | `hello-world` | Simple example demonstrating plugin system | ✅ Complete |
 | `devtools` | Developer tools with network monitoring, logs aggregation, plugin management, and performance metrics | ✅ Complete |
+| `perplexity-explorer` | Explores and maps the Perplexity AI app structure, discovering DOM elements, interactive components, API endpoints, and state | ✅ Complete |
 | `vitemonkey-built` | [Migration in progress] Template features | 🚧 Migrating |
 | `just-written` | [Migration in progress] Example features | 🚧 Migrating |
 

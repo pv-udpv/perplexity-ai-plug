@@ -10,6 +10,7 @@ import type { Plugin } from './core/types';
 // Import plugins
 import HelloWorldPlugin from './plugins/hello-world';
 import DevToolsPlugin from './plugins/devtools';
+import PerplexityExplorerPlugin from './plugins/perplexity-explorer';
 
 /**
  * Initialize the application
@@ -30,6 +31,7 @@ async function main() {
     // Register plugins
     await core.registerPlugin(HelloWorldPlugin);
     await core.registerPlugin(DevToolsPlugin);
+    await core.registerPlugin(PerplexityExplorerPlugin);
     
     console.log('[Perplexity AI] Plugins registered successfully');
     
