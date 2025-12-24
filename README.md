@@ -8,6 +8,20 @@ A curated collection of open-source userscripts for enhancing [Perplexity AI](ht
 
 ---
 
+## 📖 Complete Documentation
+
+### 👤 For Users
+- **[INSTALLATION.md](./INSTALLATION.md)** - Complete guide to installing, updating, and troubleshooting userscripts
+
+### 👨‍💻 For Developers  
+- **[PLUGIN_DEVELOPMENT_GUIDE.md](./PLUGIN_DEVELOPMENT_GUIDE.md)** - Comprehensive tutorial for creating plugins
+
+### 📚 Additional Guides
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Contribution guidelines
+- **[RULES.md](./RULES.md)** - Code standards and conventions
+
+---
+
 ## 🎯 Overview
 
 This repository provides high-quality, well-tested userscripts that extend Perplexity AI functionality:
@@ -30,34 +44,33 @@ This repository provides high-quality, well-tested userscripts that extend Perpl
 
 ## 🚀 Quick Start
 
-### Installation
+### For Users: Installing Scripts
+
+**📖 [Complete Installation Guide](./INSTALLATION.md)** - Detailed instructions for end users
+
+**Quick Install:**
 
 1. **Install Userscript Manager** (if not already installed):
    - [Tampermonkey](https://www.tampermonkey.net/) (Chrome, Firefox, Safari, Edge)
    - [Violentmonkey](https://violentmonkey.github.io/) (Chrome, Firefox)
 
-2. **Install a Script** from `/dist/`:
-   - Download `.user.js` file from releases or `/dist/` folder
-   - Click to install in your userscript manager
-   - Script is now active on perplexity.ai
+2. **Install a Script** from [Releases](https://github.com/pv-udpv/perplexity-ai-userscripts/releases):
+   - Click on a `.user.js` file
+   - Your userscript manager will prompt to install
+   - Visit [perplexity.ai](https://www.perplexity.ai) to see it in action
 
-### Example
-```bash
-# Visit and install dist/vitemonkey-built.user.js
-# Script auto-updates from GitHub (if configured)
-```
+3. **Updates**: Scripts auto-update via Tampermonkey (check daily by default)
 
 ---
 
 ## 🔨 Development
 
-### Prerequisites
-```bash
-Node.js 18+ (or Python 3.9+ with uv)
-npm install -g npm@latest
-```
+### For Developers: Creating Plugins
 
-### Setup
+**📖 [Complete Plugin Development Guide](./PLUGIN_DEVELOPMENT_GUIDE.md)** - Comprehensive tutorial for developers
+
+**Quick Start:**
+
 ```bash
 # Clone repository
 git clone https://github.com/pv-udpv/perplexity-ai-userscripts.git
@@ -65,6 +78,9 @@ cd perplexity-ai-userscripts
 
 # Install dependencies
 npm install
+
+# Create new plugin
+npm run scaffold my-plugin-name
 
 # Build all scripts
 npm run build
@@ -80,23 +96,21 @@ npm run lint
 npm run format
 ```
 
-### Creating a New Script
-```bash
-npm run scaffold my-awesome-script
+**Your plugin will be at:** `dist/my-plugin-name.user.js`
+
+### Project Structure
+
 ```
-
-This creates a new script in `scripts/my-awesome-script/` with:
-- `index.ts` - Main logic
-- `manifest.json` - Metadata
-- `utils.ts` - Helper functions
-- `__tests__/` - Unit tests
-
-### Testing Locally
-1. Run `npm run build`
-2. Open `dist/script-name.user.js` in text editor
-3. Copy content to new Tampermonkey script
-4. Test on [perplexity.ai](https://www.perplexity.ai)
-5. Use browser DevTools for debugging
+scripts/
+├── shared/              # Shared utilities (storage, events, logger)
+├── my-plugin/           # Your plugin
+│   ├── index.ts         # Main entry point
+│   ├── manifest.json    # Plugin metadata
+│   ├── utils.ts         # Helper functions
+│   ├── types.ts         # TypeScript types
+│   └── __tests__/       # Unit tests
+dist/                    # Compiled .user.js files
+```
 
 ---
 
@@ -124,10 +138,28 @@ See [RULES.md](./RULES.md) for complete guidelines.
 
 ## 📚 Documentation
 
-- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - How to contribute
-- **[RULES.md](./RULES.md)** - Project standards & conventions
+### For End Users
+- **[INSTALLATION.md](./INSTALLATION.md)** - Complete guide to installing, updating, and troubleshooting userscripts
+  - Installing userscript managers (Tampermonkey/Violentmonkey)
+  - Installing and updating scripts
+  - Troubleshooting common issues
+  - FAQ for users
+
+### For Developers
+- **[PLUGIN_DEVELOPMENT_GUIDE.md](./PLUGIN_DEVELOPMENT_GUIDE.md)** - Comprehensive guide to creating plugins
+  - Quick start tutorial
+  - Plugin architecture overview
+  - Using shared utilities (storage, events, logger)
+  - Manifest configuration
+  - Testing and debugging
+  - Best practices and examples
+- **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Contribution guidelines
+- **[RULES.md](./RULES.md)** - Project standards and conventions
+
+### Additional Resources
+- **[CHANGELOG.md](./CHANGELOG.md)** - Version history
+- **[TIER1_IMPLEMENTATION_GUIDE.md](./TIER1_IMPLEMENTATION_GUIDE.md)** - Shared modules implementation
 - **.copilot-instructions.md** - AI assistant guidelines
-- **[CHANGELOG.md](./CHANGELOG.md)** - Version history (coming soon)
 
 ---
 
