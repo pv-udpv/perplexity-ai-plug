@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         ViteMonkey Built - Perplexity AI Template
-// @namespace    https://github.com/pv-udpv/perplexity-ai-userscripts
+// @namespace    https://github.com/pv-udpv/perplexity-ai-plug
 // @version      1.0.0
 // @author       pv-udpv
 // @description  Template for ViteMonkey-based Perplexity AI userscript with modern TypeScript, logging, and configuration management.
 // @license      MIT
-// @source       https://github.com/pv-udpv/perplexity-ai-userscripts.git
+// @source       https://github.com/pv-udpv/perplexity-ai-plug.git
 // @match        https://www.perplexity.ai/*
 // @grant        GM_getValue
 // @grant        GM_setValue

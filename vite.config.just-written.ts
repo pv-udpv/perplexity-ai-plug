@@ -7,7 +7,7 @@ export default defineConfig({
       entry: 'scripts/just-written/index.ts',
       userscript: {
         name: 'Just Written - Simple Perplexity AI Script',
-        namespace: 'https://github.com/pv-udpv/perplexity-ai-userscripts',
+        namespace: 'https://github.com/pv-udpv/perplexity-ai-plug',
         version: '1.0.0',
         description: 'A simple example userscript demonstrating keyboard shortcuts, message monitoring, and UI injection for Perplexity AI.',
         author: 'pv-udpv',

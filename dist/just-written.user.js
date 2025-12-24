@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name         Just Written - Simple Perplexity AI Script
-// @namespace    https://github.com/pv-udpv/perplexity-ai-userscripts
+// @namespace    https://github.com/pv-udpv/perplexity-ai-plug
 // @version      1.0.0
 // @author       pv-udpv
 // @description  A simple example userscript demonstrating keyboard shortcuts, message monitoring, and UI injection for Perplexity AI.
 // @license      MIT
-// @source       https://github.com/pv-udpv/perplexity-ai-userscripts.git
+// @source       https://github.com/pv-udpv/perplexity-ai-plug.git
 // @match        https://www.perplexity.ai/*
 // @run-at       document-idle
 // ==/UserScript==

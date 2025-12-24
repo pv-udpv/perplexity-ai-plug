@@ -7,7 +7,7 @@ export default defineConfig({
       entry: 'scripts/vitemonkey-built/index.ts',
       userscript: {
         name: 'ViteMonkey Built - Perplexity AI Template',
-        namespace: 'https://github.com/pv-udpv/perplexity-ai-userscripts',
+        namespace: 'https://github.com/pv-udpv/perplexity-ai-plug',
         version: '1.0.0',
         description: 'Template for ViteMonkey-based Perplexity AI userscript with modern TypeScript, logging, and configuration management.',
         author: 'pv-udpv',
