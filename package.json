@@ -11,7 +11,7 @@
     "url": "https://github.com/pv-udpv/perplexity-ai-userscripts.git"
   },
   "scripts": {
-    "build": "npm run build:vitemonkey && npm run build:just-written",
+    "build": "npm run build:vitemonkey; npm run build:just-written",
     "build:vitemonkey": "vite build --config vite.config.ts",
     "build:just-written": "vite build --config vite.config.just-written.ts",
     "build:watch": "vite build --watch",
