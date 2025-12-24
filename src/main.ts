@@ -8,8 +8,8 @@ import { createCore } from './core/manager';
 import type { Plugin } from './core/types';
 
 // Import plugins
-// NOTE: In a real setup, this would dynamically import from src/plugins/
-// For now, we'll demonstrate with a simple structure
+import HelloWorldPlugin from './plugins/hello-world';
+import DevToolsPlugin from './plugins/devtools';
 
 /**
  * Initialize the application
@@ -27,9 +27,11 @@ async function main() {
     
     console.log('[Perplexity AI] Core initialized, version:', coreAPI.version);
     
-    // Register plugins here
-    // Example: await core.registerPlugin(HelloWorldPlugin);
-    // Example: await core.registerPlugin(SettingsPanelPlugin);
+    // Register plugins
+    await core.registerPlugin(HelloWorldPlugin);
+    await core.registerPlugin(DevToolsPlugin);
+    
+    console.log('[Perplexity AI] Plugins registered successfully');
     
     // Plugins will be auto-enabled if they were previously enabled
     
