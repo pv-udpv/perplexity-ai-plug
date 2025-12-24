@@ -1,5 +1,5 @@
 {
-  "name": "perplexity-ai-userscripts",
+  "name": "perplexity-ai-plug",
   "version": "1.0.0",
   "description": "Collection of userscripts for Perplexity AI enhancement. ViteMonkey + Tampermonkey-compatible scripts for improved productivity and workflow automation.",
   "type": "module",
