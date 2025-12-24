@@ -1,30 +1,41 @@
 # Perplexity AI Userscripts
 
-A curated collection of open-source userscripts for enhancing [Perplexity AI](https://www.perplexity.ai) productivity and user experience.
+A modular, plugin-based framework for enhancing [Perplexity AI](https://www.perplexity.ai) with custom features and functionality.
 
-🚀 **Built with**: ViteMonkey + TypeScript + Modern DOM API  
-🔧 **Compatible**: Tampermonkey, Violentmonkey (Chrome, Firefox, Safari)  
-📦 **Package Manager**: npm (or `uv pip` for Python-based builds)  
+🚀 **Architecture**: Plugin-based system with core framework  
+🔧 **Built with**: TypeScript + Modern DOM API  
+📦 **Compatible**: Tampermonkey, Violentmonkey (Chrome, Firefox, Safari)  
+⚡ **Package Manager**: npm
 
 ---
 
 ## 🎯 Overview
 
-This repository provides high-quality, well-tested userscripts that extend Perplexity AI functionality:
+This repository provides a powerful plugin system for extending Perplexity AI:
 
-- **Enhanced UI**: Keyboard shortcuts, custom themes, layout tweaks
-- **Productivity**: Chat history search, response export, session management
-- **Automation**: Scheduled queries, batch processing, auto-refresh
-- **Integration**: External tools, API connectors, data sync
+### Core Framework
+- **UI Components**: Panels, modals, toasts, and form components
+- **Messaging**: Event bus for inter-plugin communication
+- **Storage**: Namespaced storage with localStorage/GM_storage support
+- **Logger**: Structured logging for debugging
+- **Browser API**: Unified API for userscript managers
+
+### Plugin System
+- **Modular**: Features implemented as independent plugins
+- **Type-Safe**: Full TypeScript support with defined contracts
+- **Lifecycle Management**: Load, enable, disable, and unload plugins
+- **Configuration**: Plugin-specific settings with persistence
+- **Extensible**: Easy to create custom plugins
 
 ---
 
-## 📦 Scripts
+## 📦 Plugins
 
-| Script | Description | Status |
+| Plugin | Description | Status |
 |--------|-------------|--------|
-| `vitemonkey-built` | [Coming soon] Template for ViteMonkey-based scripts | 🚧 Template |
-| `just-written` | [Coming soon] Example script with modern TypeScript | 🚧 Example |
+| `hello-world` | Simple example demonstrating plugin system | ✅ Complete |
+| `vitemonkey-built` | [Migration in progress] Template features | 🚧 Migrating |
+| `just-written` | [Migration in progress] Example features | 🚧 Migrating |
 
 ---
 
@@ -80,16 +91,25 @@ npm run lint
 npm run format
 ```
 
-### Creating a New Script
+### Creating a New Plugin
+
+See [Plugin Development Guide](./docs/plugin-development.md) for detailed instructions.
+
+Quick start:
 ```bash
-npm run scaffold my-awesome-script
+# Create plugin directory
+mkdir -p src/plugins/my-plugin
+
+# Create plugin file (src/plugins/my-plugin/index.ts)
+# Implement Plugin interface
+# Register in src/main.ts
 ```
 
-This creates a new script in `scripts/my-awesome-script/` with:
-- `index.ts` - Main logic
-- `manifest.json` - Metadata
-- `utils.ts` - Helper functions
-- `__tests__/` - Unit tests
+A plugin typically includes:
+- `index.ts` - Plugin implementation
+- Plugin metadata (id, name, version, etc.)
+- Lifecycle hooks (onLoad, onEnable, onDisable)
+- Uses Core API for UI, storage, messaging
 
 ### Testing Locally
 1. Run `npm run build`
@@ -124,9 +144,10 @@ See [RULES.md](./RULES.md) for complete guidelines.
 
 ## 📚 Documentation
 
+- **[PLUGIN_ARCHITECTURE.md](./PLUGIN_ARCHITECTURE.md)** - Architecture design and overview
+- **[Plugin Development Guide](./docs/plugin-development.md)** - How to create plugins
 - **[CONTRIBUTING.md](./CONTRIBUTING.md)** - How to contribute
 - **[RULES.md](./RULES.md)** - Project standards & conventions
-- **.copilot-instructions.md** - AI assistant guidelines
 - **[CHANGELOG.md](./CHANGELOG.md)** - Version history (coming soon)
 
 ---
@@ -135,11 +156,12 @@ See [RULES.md](./RULES.md) for complete guidelines.
 
 | Tool | Purpose |
 |------|----------|
-| **Vite + ViteMonkey** | Fast build, userscript bundling |
-| **TypeScript 5+** | Type-safe development |
-| **Vitest** | Unit testing |
+| **TypeScript 5+** | Type-safe plugin development |
+| **Core Framework** | Plugin system, UI, messaging, storage |
+| **Vitest** | Unit testing framework |
 | **ESLint + Prettier** | Code quality & formatting |
-| **Tampermonkey API** | Storage, HTTP, utilities |
+| **Tampermonkey API** | Browser integration (storage, HTTP, etc.) |
+| **Vite** | Build system for bundling |
 | **GitHub Actions** | CI/CD automation (planned) |
 
 ---
@@ -181,12 +203,32 @@ Feel free to fork, modify, and distribute these userscripts.
 
 ## 🗺️ Roadmap
 
-- [ ] Script 1: ViteMonkey template with examples
-- [ ] Script 2: Example productivity script
+### Phase 1: Core Framework ✅
+- [x] Plugin system architecture
+- [x] Core API (UI, messaging, storage, logger)
+- [x] Plugin manager with lifecycle
+- [x] Basic UI components (panels, toasts)
+- [x] Hello World example plugin
+
+### Phase 2: Plugin Migration 🚧
+- [ ] Migrate vitemonkey-built to plugin
+- [ ] Migrate just-written to plugin
+- [ ] Create settings panel plugin
+- [ ] Build plugin manager UI
+
+### Phase 3: Enhanced Features
+- [ ] Modal dialog system
+- [ ] Advanced UI components
+- [ ] Plugin configuration UI
+- [ ] Theme system
+- [ ] XHR wrapper for API calls
+
+### Phase 4: Distribution
+- [ ] Build system for userscript generation
 - [ ] Auto-update system via GitHub releases
-- [ ] Community script directory
+- [ ] Plugin marketplace/directory
 - [ ] GitHub Actions CI/CD pipeline
-- [ ] Distribution via Greasy Fork (optional)
+- [ ] Distribution via Greasy Fork
 
 ---
 

@@ -22,6 +22,10 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
+      "@core": ["src/core"],
+      "@core/*": ["src/core/*"],
+      "@plugins": ["src/plugins"],
+      "@plugins/*": ["src/plugins/*"],
       "@shared": ["scripts/shared"],
       "@shared/*": ["scripts/shared/*"],
       "@vitemonkey-built": ["scripts/vitemonkey-built"],
@@ -30,6 +34,6 @@
       "@just-written/*": ["scripts/just-written/*"]
     }
   },
-  "include": ["scripts/**/*.ts"],
+  "include": ["scripts/**/*.ts", "src/**/*.ts"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }
