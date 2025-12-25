@@ -7,7 +7,7 @@ Comprehensive tool for analyzing, filtering, and exporting storage dumps.
 Usage:
     python analyze-dump.py dump.json --analyze
     python analyze-dump.py dump.json --export storage,indexeddb --format gz
-    python analyze-dump.py dump.json --extract-code --analyze-deps --output ./results
+    python analyze-dump.py dump.json --analyze-deps --output ./results
 """
 
 import json
@@ -15,14 +15,13 @@ import gzip
 import sys
 import csv
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
 from datetime import datetime
 
 try:
     import click
     from rich.console import Console
     from rich.table import Table
-    from rich.panel import Panel
     from rich.progress import Progress
 except ImportError:
     print("📦 Missing dependencies. Install with: pip install -r tools/requirements.txt")
@@ -52,7 +51,7 @@ class DumpLoader:
         """Load JSON dump."""
         console.print(f"[yellow]📄 Loading dump: {path.name}[/yellow]")
         try:
-            with open(path, 'r') as f:
+            with open(path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except json.JSONDecodeError as e:
             console.print(f"[red]❌ Invalid JSON: {e}[/red]")
@@ -137,19 +136,27 @@ class AnalysisPipeline:
         
         timestamp = self.data.get('metadata', {}).get('timestamp', '')[:16].replace(':', '-')
         
+        # Create case-insensitive mapping of section names
+        data_keys = {k.lower(): k for k in self.data.keys()}
+        
         for section in sections:
-            if section not in self.data:
+            section_lower = section.lower()
+            
+            # Find the actual key in data (case-insensitive)
+            actual_key = data_keys.get(section_lower)
+            
+            if not actual_key:
                 console.print(f"[yellow]⚠️  Section '{section}' not found[/yellow]")
                 continue
             
-            export_data = self.data[section]
+            export_data = self.data[actual_key]
             
             if format == 'json':
-                filename = f"dump_{section}_{timestamp}.json"
+                filename = f"dump_{section_lower}_{timestamp}.json"
                 filepath = self.output_dir / filename
                 size = DumpExporter.export_json(export_data, filepath)
             elif format == 'gz':
-                filename = f"dump_{section}_{timestamp}.jsonz"
+                filename = f"dump_{section_lower}_{timestamp}.jsonz"
                 filepath = self.output_dir / filename
                 size = DumpExporter.export_gz(export_data, filepath)
             else:

@@ -148,8 +148,7 @@ Detects:
 Infers:
 - **Schema**: field types, nullability, presence %
 - **Cardinality**: unique values, distribution ratios
-- **Foreign keys**: relationships between stores
-- **Indexes**: performance indicators
+- **Indexes**: extracted index definitions (not analyzed yet)
 
 ### Code Graph
 
@@ -194,16 +193,22 @@ Extracts:
 
 ## 📁 Output Files
 
-When using `--output ./analysis`:
+When using `--analyze` or `--analyze-deps` with `--output ./analysis`:
 
 ```
 analysis/
+├── code-graph.json              # Dependency graph (with --analyze-deps)
+├── schema.json                  # Inferred JSON Schema (with --analyze)
+└── analysis-report.md           # Markdown report (with --analyze)
+```
+
+When using `--export` with `--output ./exports`:
+
+```
+exports/
 ├── dump_storage_*.jsonz         # Compressed storage data
 ├── dump_indexeddb_*.jsonz       # Compressed IndexedDB data
-├── dump_caches_*.jsonz          # Compressed cache data
-├── code-graph.json              # Dependency graph
-├── schema.json                  # Inferred JSON Schema
-└── analysis-report.md           # Markdown report
+└── dump_caches_*.jsonz          # Compressed cache data
 ```
 
 ---
