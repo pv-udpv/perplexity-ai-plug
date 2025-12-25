@@ -1,0 +1,24 @@
+{
+  "name": "Perplexity Storage Dumper",
+  "version": "1.0.0",
+  "author": "pv-udpv",
+  "description": "Dump all Perplexity.ai runtime context (storage, caches, state) to JSON for offline analysis",
+  "match": [
+    "https://www.perplexity.ai/*"
+  ],
+  "grant": [
+    "GM_download"
+  ],
+  "distribution": {
+    "gist": {
+      "enabled": true,
+      "gistId": "8c0bafb4af72141a40f207b964b68725",
+      "filename": "perplexity-dumper.user.js",
+      "description": "Perplexity Storage Dumper - Extract app state for offline analysis"
+    }
+  },
+  "build": {
+    "externalGlobals": {},
+    "minify": false
+  }
+}
