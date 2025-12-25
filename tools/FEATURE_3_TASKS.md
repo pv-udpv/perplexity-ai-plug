@@ -1,5 +1,7 @@
 # Feature 3: JupyterLite Integration
 
+> ⚠️ **IMPORTANT**: This is a planning document. Code examples are for illustration only and may contain security vulnerabilities. **Always review [SECURITY_CONSIDERATIONS.md](./SECURITY_CONSIDERATIONS.md) before implementing any code from this document.**
+
 ## 🎯 Goal
 Interactive runtime analysis with userscript communication for live debugging.
 
