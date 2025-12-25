@@ -349,8 +349,11 @@ class JupyterBridge {
   }
   
   executeCode(message: WSMessage) {
+    // ⚠️ SECURITY WARNING: This is INSECURE example code!
+    // eval() allows arbitrary code execution - DO NOT USE IN PRODUCTION
+    // See SECURITY_CONSIDERATIONS.md for secure alternatives
     try {
-      const result = eval(message.payload.code);
+      const result = eval(message.payload.code);  // INSECURE - Replace with sandboxed execution
       this.sendResponse(message.id, 'success', result);
     } catch (error) {
       this.sendResponse(message.id, 'error', null, error.message);
@@ -366,9 +369,12 @@ class JupyterBridge {
   }
   
   watchVariable(message: WSMessage) {
+    // ⚠️ SECURITY WARNING: This is INSECURE example code!
+    // eval() allows arbitrary code execution - DO NOT USE IN PRODUCTION
+    // See SECURITY_CONSIDERATIONS.md for secure alternatives
     const { path } = message.payload;
     try {
-      const value = eval(path);
+      const value = eval(path);  // INSECURE - Replace with whitelisted property access
       this.sendResponse(message.id, 'success', value);
     } catch (error) {
       this.sendResponse(message.id, 'error', null, error.message);
