@@ -1,117 +1,255 @@
-# Perplexity Dump Analyzer
+# 🔍 Perplexity Storage Dump Analyzer
 
-🔍 **Comprehensive analysis and export tool for Perplexity Storage Dumps**
+Comprehensive Python tool for analyzing, filtering, and exporting Perplexity Storage Dumps.
 
-## Installation
+**Features**:
+- 📦 Selective export (json, gz, jsonl formats)
+- 📊 Cardinality & schema analysis
+- 🔗 Code dependency graph extraction
+- 📋 Automatic report generation
+- 🐍 Full Python 3.10+ support
+
+---
+
+## ⚡ Quick Start
+
+### Installation
 
 ```bash
+# Option 1: Use npm script (if in project root)
+pnpm dump:install
+
+# Option 2: Manual setup
 cd tools
 pip install -r requirements.txt
 ```
 
-## Usage
-
-### Basic Analysis
+### Basic Usage
 
 ```bash
-python analyze-dump.py perplexity-dump_2025-12-25T20-38-00.json --analyze
+# Via npm
+pnpm dump:analyze perplexity-dump_*.json --analyze
+
+# Or directly
+python tools/analyze-dump.py dump.json --analyze
+
+# Or via shell script
+./scripts/perplexity-analyze dump.json --analyze
 ```
 
-Output:
+---
+
+## 📚 Commands
+
+### Full Analysis
+
+```bash
+python tools/analyze-dump.py dump.json --analyze --analyze-deps --output ./results
+```
+
+**Output**:
 ```
 📊 Storage Analysis
-localStorage:
-  Total Keys: 15
-  Total Size: 2.3 MB
-  Avg Value Size: 154 KB
+localStorage: 15 keys, 2.34 MB
+sessionStorage: 8 keys, 234 KB
 
-IndexedDB:
-  Database: perplexity-db
-    Store: threads (42 records)
-    Store: messages (1,247 records)
+📊 IndexedDB Analysis
+Database: perplexity-db
+  Store: threads (42 records)
+  Store: messages (1,247 records)
+
+📊 Code Analysis
+Components: 42
+Dependencies: 156
+
+✅ Done!
 ```
 
-### Export Specific Sections
+### Export with Compression
 
 ```bash
-# Export as gzipped JSON
-python analyze-dump.py dump.json --export storage,indexeddb --format gz --output ./exports
-
-# Output:
-# ✅ dump_storage_2025-12-25.jsonz (234.5 KB)
-# ✅ dump_indexeddb_2025-12-25.jsonz (1.2 MB)
+python tools/analyze-dump.py dump.json \
+  --export storage,indexeddb,caches \
+  --format gz \
+  --output ./exports
 ```
 
-### Extract Code & Dependencies
+**Output files**:
+```
+exports/
+├── dump_storage_2025-12-25.jsonz (234.5 KB)
+├── dump_indexeddb_2025-12-25.jsonz (1.2 MB)
+└── dump_caches_2025-12-25.jsonz (5.6 MB)
+```
+
+### Code Dependencies Only
 
 ```bash
-python analyze-dump.py dump.json --analyze-deps --output ./analysis
-
-# Output:
-# Components: 42
-# Dependencies: 156
-# ✅ Graph exported to ./analysis/code-graph.json
+python tools/analyze-dump.py dump.json --analyze-deps --output ./code-analysis
 ```
 
-## Features
+**Output**:
+```json
+{
+  "components": {
+    "_app": {
+      "url": "https://.../app-abc123.js",
+      "size": 12345,
+      "imports": ["react", "zustand", "./Layout"]
+    }
+  },
+  "stats": {
+    "total_components": 42,
+    "total_dependencies": 156
+  }
+}
+```
 
-### 📊 Storage Analysis
+---
 
-- **Cardinality analysis** - unique values per key
-- **Key patterns** - detect prefixes (auth_*, cache_*)
-- **Data type inference** - JSON, strings, numbers
-- **Size distribution** - min, max, median, avg
-
-### 🗄️ IndexedDB Analysis
-
-- **Schema inference** - detect field types
-- **Cardinality per field** - uniqueness ratio
-- **Foreign key detection** - relationship analysis
-- **Index analysis** - performance indicators
-
-### 💾 Export Options
+## 🎯 CLI Options
 
 ```bash
-# Format: json, gz (gzipped), jsonl (line-delimited)
-python analyze-dump.py dump.json --export storage --format gz
+usage: analyze-dump.py [-h] [--analyze] [--export EXPORT] [--format {json,gz,jsonl}]
+                       [--extract-code EXTRACT_CODE] [--analyze-deps]
+                       [--output OUTPUT]
+                       dump_file
 
-# Split by store
-python analyze-dump.py dump.json --export indexeddb --split-by store
+Analyze and export Perplexity Storage Dumps.
+
+positional arguments:
+  dump_file                      Path to dump JSON file
+
+options:
+  --analyze                      Perform full analysis
+  --export EXPORT                Export sections (comma-separated:
+                                 storage,indexeddb,caches)
+  --format {json,gz,jsonl}      Export format (default: gz)
+  --extract-code EXTRACT_CODE    Extract JS/CSS code to directory
+  --analyze-deps                 Analyze code dependencies
+  --output OUTPUT               Output directory (default: ./dumps)
+  -h, --help                    show this help message and exit
 ```
 
-### 🔍 Code Graph
+---
 
-```bash
-python analyze-dump.py dump.json --analyze-deps
-```
+## 📊 Analysis Output
 
-Produces `code-graph.json` with:
-- Import statements extracted from JS
-- Dependency relationships
-- Component metadata (size, type)
-- Circular dependency detection
+### Storage Analysis
 
-## Output Files
+Detects:
+- **Key patterns**: `auth_*`, `cache_*`, `config_*`
+- **Value distribution**: min, max, median, average sizes
+- **Data types**: JSON objects/arrays, strings, numbers
+- **Cardinality**: unique values per key
+
+### IndexedDB Analysis
+
+Infers:
+- **Schema**: field types, nullability, presence %
+- **Cardinality**: unique values, distribution ratios
+- **Foreign keys**: relationships between stores
+- **Indexes**: performance indicators
+
+### Code Graph
+
+Extracts:
+- **Imports**: from all cached JavaScript files
+- **Dependencies**: module relationships
+- **Components**: function/class definitions
+- **Statistics**: total components, dependency count
+
+---
+
+## 🔒 Security Notes
+
+⚠️ **Dumps contain sensitive data**:
+- Authentication tokens
+- User messages
+- Personal settings
+- API keys
+
+✅ **Best Practices**:
+- Never share dumps publicly
+- Use `--export` to extract only needed sections
+- Sanitize before sharing:
+  ```python
+  import json
+  dump = json.load(open('dump.json'))
+  dump['storage']['localStorage'].pop('auth_token', None)
+  json.dump(dump, open('dump-clean.json', 'w'))
+  ```
+- Store exports with restricted file permissions
+
+---
+
+## 📈 Performance
+
+- **Typical 10MB dump**: 5-10 seconds
+- **Streaming export (JSONL)**: 30 seconds for 100k records
+- **Code graph generation**: 2-3 seconds
+- **Report generation**: <1 second
+
+---
+
+## 📁 Output Files
 
 When using `--output ./analysis`:
 
 ```
 analysis/
-├── dump_storage_2025-12-25.jsonz      # Compressed storage data
-├── dump_indexeddb_2025-12-25.jsonz    # Compressed IndexedDB data
-├── code-graph.json                    # Dependency graph
-└── analysis-report.md                 # Markdown report
+├── dump_storage_*.jsonz         # Compressed storage data
+├── dump_indexeddb_*.jsonz       # Compressed IndexedDB data
+├── dump_caches_*.jsonz          # Compressed cache data
+├── code-graph.json              # Dependency graph
+├── schema.json                  # Inferred JSON Schema
+└── analysis-report.md           # Markdown report
 ```
 
-## Performance
+---
 
-- Typical 10MB dump: ~5-10 seconds
-- Streaming export (JSONL): ~30 seconds for 100k records
-- Code graph generation: ~2-3 seconds
+## 🛠️ Development
 
-## Examples
+### Project Structure
 
-### Find authentication tokens
+```
+tools/
+├── analyze-dump.py              # Main CLI entry point
+├── analyzers/
+│   ├── __init__.py
+│   ├── storage.py               # localStorage/sessionStorage
+│   ├── indexeddb.py             # IndexedDB analysis
+│   ├── caches.py                # Cache API analysis
+│   ├── code_graph.py            # Code dependency extraction
+│   └── reporter.py              # Report & schema export
+├── requirements.txt
+└── README.md
+
+scripts/
+├── perplexity-analyze           # Shell wrapper
+└── install-analyzer.sh          # Setup script
+```
+
+### Adding Custom Analyzers
+
+```python
+from analyzers.storage import StorageAnalyzer
+from typing import Dict, Any
+
+class CustomAnalyzer:
+    def __init__(self, data: Dict[str, Any]):
+        self.data = data
+    
+    def analyze(self) -> Dict[str, Any]:
+        # Your analysis logic
+        return {}
+```
+
+---
+
+## 📝 Examples
+
+### Find Authentication Data
 
 ```python
 import json
@@ -123,46 +261,73 @@ for key, value in dump['storage']['localStorage'].items():
     if 'auth' in key.lower():
         print(f"🔑 {key}")
         if 'parsed' in value:
-            print(f"   Value: {json.dumps(value['parsed'], indent=2)}")
+            print(json.dumps(value['parsed'], indent=2))
 ```
 
-### Analyze message volume
+### Analyze Message Volume
 
-```python
+```bash
+python -c "
+import json
+from pathlib import Path
+
+dump = json.load(Path('dump.json').open())
 for db in dump['indexedDB']:
     for store in db['stores']:
         if store['name'] == 'messages':
-            print(f"Total messages: {store['count']}")
-            # Analyze record sizes
-            sizes = [len(json.dumps(r)) for r in store['records']]
-            print(f"Avg message size: {sum(sizes)/len(sizes):.0f} bytes")
+            print(f'Total messages: {store[\"count\"]}')
+            sizes = [len(json.dumps(r)) for r in store['records'][:100]]
+            print(f'Avg size: {sum(sizes)/len(sizes):.0f} bytes')
+"
 ```
 
-### Extract React components
+### Extract React Components
 
 ```bash
-python analyze-dump.py dump.json --analyze-deps
-
-# Then analyze code-graph.json
-jq '.components | keys' code-graph.json
+python tools/analyze-dump.py dump.json --analyze-deps
+jq '.components | keys' code-graph.json | head -20
 ```
 
-## Security Notes
+---
 
-⚠️ **Dumps may contain sensitive data:**
-- Authentication tokens
-- User messages
-- Personal settings
-- API keys
+## 🐛 Troubleshooting
 
-**Never share dumps publicly!**
+### Python not found
 
-Clean sensitive data:
-```python
-dump['storage']['localStorage'].pop('auth_token', None)
-dump['storage']['localStorage'].pop('api_key', None)
+```bash
+# Install Python 3.10+
+# macOS
+brew install python@3.12
+
+# Ubuntu
+sudo apt install python3.12 python3.12-venv
+
+# Windows
+# Download from python.org
 ```
 
-## License
+### Missing dependencies
+
+```bash
+pnpm dump:install
+# or
+pip install -r tools/requirements.txt
+```
+
+### Permission denied on shell script
+
+```bash
+chmod +x scripts/perplexity-analyze
+```
+
+---
+
+## 📄 License
 
 MIT - see [LICENSE](../LICENSE)
+
+---
+
+## 🙋 Support
+
+For issues and feature requests, see [GitHub Issues](https://github.com/pv-udpv/perplexity-ai-plug/issues)
