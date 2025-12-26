@@ -312,6 +312,8 @@ function generateDomFile(dir, domData) {
   Object.entries(domData.elements).forEach(([testId, el]) => {
     // Create a valid TypeScript identifier
     const identifier = testId.replace(/[^a-zA-Z0-9]/g, '_');
+    // Escape selector for use in template string
+    const escapedSelector = el.selector.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     
     content += `/**
  * ${testId}
@@ -323,7 +325,7 @@ export const ${identifier} = {
   selector: '${el.selector}',
   xpath: '${el.xpath}',
   type: '${el.type}',
-  element: () => document.querySelector('${el.selector.replace(/'/g, "\\'")}') as ${getElementType(el.type)} | null
+  element: () => document.querySelector('${escapedSelector}') as ${getElementType(el.type)} | null
 };\n\n`;
   });
   

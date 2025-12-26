@@ -62,11 +62,12 @@ async function extractAPIs(url) {
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
     
     // Simulate user interactions to trigger more API calls
-    await page.evaluate(() => {
+    const MAX_CLICKS = 5; // Limit clicks to avoid too many requests
+    await page.evaluate((maxClicks) => {
       // Click buttons to trigger API calls
       const buttons = document.querySelectorAll('button, a');
       buttons.forEach((el, index) => {
-        if (index < 5) { // Limit to first 5 to avoid too many requests
+        if (index < maxClicks) {
           try {
             el.click?.();
           } catch (e) {
@@ -77,7 +78,7 @@ async function extractAPIs(url) {
       
       // Scroll to trigger lazy loading
       window.scrollTo(0, document.body.scrollHeight / 2);
-    });
+    }, MAX_CLICKS);
     
     // Wait a bit for additional requests
     await new Promise(resolve => setTimeout(resolve, 3000));

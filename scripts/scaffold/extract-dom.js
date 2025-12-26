@@ -34,6 +34,8 @@ async function extractDOMStructure(url) {
       function generateSelector(el) {
         if (el.id) return `#${el.id}`;
         
+        // Filter out auto-generated hash-based classes (e.g., CSS-in-JS hashes)
+        // that typically match pattern: 6+ alphanumeric characters
         const classes = el.className && typeof el.className === 'string' 
           ? el.className.split(' ').filter(c => c && !c.match(/^[a-z0-9]{6,}$/i))
           : [];
