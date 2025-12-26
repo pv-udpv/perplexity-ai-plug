@@ -4,20 +4,20 @@ import monkey from 'vite-plugin-monkey';
 export default defineConfig({
   plugins: [
     monkey({
-      entry: 'scripts/vitemonkey-built/index.ts',
+      entry: 'scripts/just-written/index.ts',
       userscript: {
-        name: 'ViteMonkey Built - Perplexity AI Template',
+        name: 'Just Written - Simple Perplexity AI Script',
         namespace: 'https://github.com/pv-udpv/perplexity-ai-plug',
         version: '1.0.0',
-        description: 'Template for ViteMonkey-based Perplexity AI userscript with modern TypeScript, logging, and configuration management.',
+        description: 'A simple example userscript demonstrating keyboard shortcuts, message monitoring, and UI injection for Perplexity AI.',
         author: 'pv-udpv',
         license: 'MIT',
         match: ['https://www.perplexity.ai/*'],
-        grant: ['GM_setValue', 'GM_getValue', 'GM_xmlhttpRequest'],
-        'run-at': 'document-start',
+        grant: [],
+        'run-at': 'document-idle',
       },
       build: {
-        fileName: 'vitemonkey-built.user.js',
+        fileName: 'just-written.user.js',
       },
     }),
   ],

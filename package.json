@@ -1,16 +1,19 @@
 {
-  "name": "perplexity-ai-userscripts",
+  "name": "perplexity-ai-plug",
   "version": "1.0.0",
   "description": "Collection of userscripts for Perplexity AI enhancement. ViteMonkey + Tampermonkey-compatible scripts for improved productivity and workflow automation.",
+  "type": "module",
   "private": false,
   "author": "pv-udpv",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pv-udpv/perplexity-ai-userscripts.git"
+    "url": "https://github.com/pv-udpv/perplexity-ai-plug.git"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "npm run build:vitemonkey; npm run build:just-written",
+    "build:vitemonkey": "vite build --config vite.config.ts",
+    "build:just-written": "vite build --config vite.config.just-written.ts",
     "build:watch": "vite build --watch",
     "preview": "vite preview",
     "test": "vitest",
