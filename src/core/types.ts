@@ -114,6 +114,9 @@ export interface UIService {
   /** Create a side panel */
   createPanel(config: PanelConfig): Panel;
   
+  /** Create a multi-stage side panel (HARPA-style) */
+  createMultiStagePanel?(config: MultiStagePanelConfig): MultiStagePanel;
+  
   /** Create a modal dialog */
   createModal(config: ModalConfig): Modal;
   
@@ -125,6 +128,42 @@ export interface UIService {
   
   /** Theme management */
   theme: ThemeManager;
+}
+
+/**
+ * Multi-Stage Panel Configuration
+ */
+export interface MultiStagePanelConfig {
+  id?: string;
+  title: string;
+  initialSize?: 'collapsed' | 'quarter' | 'half' | 'full';
+  enableBackdrop?: boolean;
+  enableKeyboardShortcuts?: boolean;
+  tabs?: Array<{ id: string; label: string; icon?: string }>;
+  position?: 'right' | 'bottom';
+  content?: HTMLElement | string;
+  collapsible?: boolean;
+  draggable?: boolean;
+  resizable?: boolean;
+}
+
+/**
+ * Multi-Stage Panel Interface
+ */
+export interface MultiStagePanel {
+  id: string;
+  show(): void;
+  hide(): void;
+  toggle(): void;
+  expand(): void;
+  shrink(): void;
+  setSize(size: 'collapsed' | 'quarter' | 'half' | 'full'): void;
+  switchTab(tabId: string): void;
+  getTabContent(tabId: string): HTMLElement | undefined;
+  setTabContent(tabId: string, content: HTMLElement | string): void;
+  getState(): { size: string; isOpen: boolean; activeTab?: string };
+  isVisible(): boolean;
+  destroy(): void;
 }
 
 export interface Panel {
