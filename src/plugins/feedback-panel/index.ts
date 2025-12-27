@@ -19,12 +19,14 @@ const FeedbackPanelPlugin: Plugin = {
   
   async onLoad(core: CoreAPI) {
     console.log('[Feedback Panel] Loading...');
+    // Store core API reference
+    (this as any).coreAPI = core;
   },
   
   async onEnable() {
     console.log('[Feedback Panel] Enabling...');
     
-    const core = (window as any).__PPLX_CORE__;
+    const core = (this as any).coreAPI as CoreAPI;
     if (!core) {
       console.error('[Feedback Panel] Core API not available');
       return;
@@ -74,6 +76,7 @@ const FeedbackPanelPlugin: Plugin = {
   },
   
   setupReportTab(panel: MultiStagePanel) {
+    const core = (this as any).coreAPI as CoreAPI; // Capture core reference
     const content = document.createElement('div');
     content.style.cssText = 'padding: 20px;';
     
@@ -196,7 +199,7 @@ const FeedbackPanelPlugin: Plugin = {
         const description = (document.getElementById('feedback-description') as HTMLTextAreaElement)?.value;
         
         if (!title || !description) {
-          alert('Please fill in all required fields');
+          core?.ui?.showToast('Please fill in all required fields', 'error', 3000);
           return;
         }
         
@@ -222,7 +225,7 @@ const FeedbackPanelPlugin: Plugin = {
       cancelBtn?.addEventListener('click', () => {
         panel.hide();
       });
-    }, 100);
+    }, EVENT_LISTENER_DELAY);
   },
   
   setupDiscussTab(panel: MultiStagePanel) {

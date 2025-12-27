@@ -22,20 +22,25 @@ import { generateId } from '../browser/dom-utils';
 
 export type PanelSize = 'collapsed' | 'quarter' | 'half' | 'full';
 export type PanelMode = 'chat' | 'command' | 'inspector';
-export type PanelTab = 'report' | 'discuss' | 'settings';
+
+export interface PanelTabConfig {
+  id: string;
+  label: string;
+  icon?: string;
+}
 
 export interface MultiStagePanelState {
   size: PanelSize;
   isOpen: boolean;
   lastMode?: PanelMode;
-  activeTab?: PanelTab;
+  activeTab?: string;
 }
 
 export interface MultiStagePanelConfig extends Omit<PanelConfig, 'width' | 'position'> {
   initialSize?: PanelSize;
   enableBackdrop?: boolean;
   enableKeyboardShortcuts?: boolean;
-  tabs?: { id: PanelTab; label: string; icon?: string }[];
+  tabs?: PanelTabConfig[];
   position?: 'right' | 'bottom'; // right for desktop, bottom for mobile
 }
 
@@ -48,6 +53,8 @@ const SIZE_TO_WIDTH: Record<PanelSize, string> = {
 
 const MOBILE_BREAKPOINT = 768;
 const STORAGE_KEY = 'pplx-multi-stage-panel-state';
+const PANEL_SIZES: PanelSize[] = ['collapsed', 'quarter', 'half', 'full'];
+const EVENT_LISTENER_DELAY = 100; // Delay for DOM event listeners to ensure elements are rendered
 
 /**
  * Multi-Stage Panel Class
@@ -61,7 +68,7 @@ export class MultiStagePanel {
   private contentElement: HTMLElement;
   private headerElement: HTMLElement;
   private tabsElement: HTMLElement | null = null;
-  private tabContentElements: Map<PanelTab, HTMLElement> = new Map();
+  private tabContentElements: Map<string, HTMLElement> = new Map();
 
   constructor(config: MultiStagePanelConfig) {
     this.id = config.id || generateId('multi-panel');
@@ -489,11 +496,10 @@ export class MultiStagePanel {
    * Expand panel to next size
    */
   expand(): void {
-    const sizes: PanelSize[] = ['collapsed', 'quarter', 'half', 'full'];
-    const currentIndex = sizes.indexOf(this.state.size);
+    const currentIndex = PANEL_SIZES.indexOf(this.state.size);
     
-    if (currentIndex < sizes.length - 1) {
-      this.setSize(sizes[currentIndex + 1]);
+    if (currentIndex < PANEL_SIZES.length - 1) {
+      this.setSize(PANEL_SIZES[currentIndex + 1]);
     }
   }
 
@@ -501,11 +507,10 @@ export class MultiStagePanel {
    * Shrink panel to previous size
    */
   shrink(): void {
-    const sizes: PanelSize[] = ['collapsed', 'quarter', 'half', 'full'];
-    const currentIndex = sizes.indexOf(this.state.size);
+    const currentIndex = PANEL_SIZES.indexOf(this.state.size);
     
     if (currentIndex > 0) {
-      this.setSize(sizes[currentIndex - 1]);
+      this.setSize(PANEL_SIZES[currentIndex - 1]);
     }
   }
 
@@ -534,7 +539,7 @@ export class MultiStagePanel {
   /**
    * Switch tab
    */
-  switchTab(tabId: PanelTab): void {
+  switchTab(tabId: string): void {
     this.state.activeTab = tabId;
 
     // Update tab buttons
@@ -565,14 +570,14 @@ export class MultiStagePanel {
   /**
    * Get tab content element
    */
-  getTabContent(tabId: PanelTab): HTMLElement | undefined {
+  getTabContent(tabId: string): HTMLElement | undefined {
     return this.tabContentElements.get(tabId);
   }
 
   /**
    * Set content for a specific tab
    */
-  setTabContent(tabId: PanelTab, content: HTMLElement | string): void {
+  setTabContent(tabId: string, content: HTMLElement | string): void {
     const tabContent = this.tabContentElements.get(tabId);
     if (!tabContent) return;
 
