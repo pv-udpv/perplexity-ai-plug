@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Stage Panel Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .demo-container {
+      max-width: 800px;
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .feature {
+      padding: 16px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+
+    .feature h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .feature p {
+      font-size: 12px;
+      margin: 0;
+      color: #666;
+    }
+
+    .demo-info {
+      background: #e8f5e9;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      border-left: 4px solid #4caf50;
+    }
+
+    .demo-info strong {
+      color: #2e7d32;
+    }
+
+    .keyboard-shortcuts {
+      background: #fff3e0;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid #ff9800;
+    }
+
+    .keyboard-shortcuts h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #e65100;
+    }
+
+    .keyboard-shortcuts ul {
+      list-style: none;
+    }
+
+    .keyboard-shortcuts li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .keyboard-shortcuts li:last-child {
+      border-bottom: none;
+    }
+
+    .keyboard-shortcuts kbd {
+      background: #f5f5f5;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      border: 1px solid #ddd;
+    }
+
+    .status {
+      margin-top: 24px;
+      padding: 12px;
+      background: #e3f2fd;
+      border-radius: 8px;
+      text-align: center;
+      color: #1565c0;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .demo-container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <h1>🎨 Multi-Stage Panel Demo</h1>
+    <p>
+      This page demonstrates the HARPA-style multi-stage side panel implementation.
+      Click the floating button in the bottom-right corner or use keyboard shortcuts to interact with the panel.
+    </p>
+
+    <div class="demo-info">
+      <strong>✨ Panel Features:</strong>
+      <p style="margin-top: 8px;">
+        The panel supports 4 size states (collapsed → quarter → half → full), 
+        smooth transitions, state persistence, and full keyboard navigation.
+      </p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <h3>📏 4 Panel Sizes</h3>
+        <p>Collapsed, quarter, half, and full-width modes</p>
+      </div>
+      <div class="feature">
+        <h3>🎭 Smooth Transitions</h3>
+        <p>300ms cubic-bezier animations</p>
+      </div>
+      <div class="feature">
+        <h3>💾 State Persistence</h3>
+        <p>Remembers size and position</p>
+      </div>
+      <div class="feature">
+        <h3>⌨️ Keyboard Shortcuts</h3>
+        <p>Fast navigation and control</p>
+      </div>
+      <div class="feature">
+        <h3>📱 Responsive Design</h3>
+        <p>Desktop fixed, mobile bottom sheet</p>
+      </div>
+      <div class="feature">
+        <h3>♿ Accessible</h3>
+        <p>ARIA labels and keyboard navigation</p>
+      </div>
+    </div>
+
+    <div class="keyboard-shortcuts">
+      <h3>⌨️ Keyboard Shortcuts</h3>
+      <ul>
+        <li>
+          <span>Toggle Panel</span>
+          <kbd>Ctrl/Cmd + J</kbd>
+        </li>
+        <li>
+          <span>Expand Panel</span>
+          <kbd>]</kbd>
+        </li>
+        <li>
+          <span>Shrink Panel</span>
+          <kbd>[</kbd>
+        </li>
+        <li>
+          <span>Close Panel</span>
+          <kbd>Escape</kbd>
+        </li>
+      </ul>
+    </div>
+
+    <div class="status" id="status">
+      Loading panel system...
+    </div>
+  </div>
+
+  <script type="module">
+    // This is a demo/test page - would normally be loaded via userscript
+    // For actual implementation, see src/core/ui/multi-stage-panel.ts
+    
+    const statusEl = document.getElementById('status');
+    
+    // Simulate panel loading
+    setTimeout(() => {
+      statusEl.textContent = '✅ Panel system loaded! Click the 💬 button in the bottom-right corner.';
+      statusEl.style.background = '#e8f5e9';
+      statusEl.style.color = '#2e7d32';
+    }, 1000);
+
+    // Note: The actual panel implementation requires the full plugin system
+    // This is just a visual demo page to show the concept
+    console.log('Multi-Stage Panel Demo Page Loaded');
+    console.log('For actual implementation, build and install the userscript.');
+  </script>
+</body>
+</html>
